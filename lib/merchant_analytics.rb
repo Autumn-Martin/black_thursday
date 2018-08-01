@@ -105,8 +105,8 @@ module MerchantAnalytics
     top_selling_item_by_quantity(sold_quantities)
   end
 
-  def pull_paid_invoices_per_merchant(merchant_id)
-    @sales_engine.invoices.find_all_by_merchant_id(merchant_id).find_all do |invoice|
+  def pull_paid_invoices_per_merchant(m_id)
+    @sales_engine.invoices.find_all_by_merchant_id(m_id).find_all do |invoice|
       invoice_paid_in_full?(invoice.id)
     end
   end
