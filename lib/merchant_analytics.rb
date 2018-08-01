@@ -1,5 +1,4 @@
 module MerchantAnalytics
-
   def total_revenue_by_date(date)
     invoices = find_all_invoices_by_date(date)
     invoices.inject(0) do |total, invoice|
@@ -15,13 +14,13 @@ module MerchantAnalytics
 
   def top_revenue_earners(number = 20)
     sorted = sort_summed_invoice_totals(number)
-    sorted.map do |merchant_id, invoice_total|
+    sorted.map do |merchant_id, _invoice_total|
       @sales_engine.merchants.find_by_id(merchant_id)
     end
   end
 
   def sort_summed_invoice_totals(number)
-    sorted = sum_invoice_totals.sort_by {|merchant_id, sum| sum }
+    sorted = sum_invoice_totals.sort_by { |_merchant_id, sum| sum }
     sorted[-number..-1].reverse.to_h
   end
 
@@ -30,7 +29,7 @@ module MerchantAnalytics
     invoice_hash.each do |merchant_id, invoices|
       totals[merchant_id] = sum_invoices(invoices)
     end
-    totals.delete_if {|merchant_id, sum| sum.nil?}
+    totals.delete_if { |_merchant_id, sum| sum.nil? }
   end
 
   def sum_invoices(invoices)
@@ -68,9 +67,9 @@ module MerchantAnalytics
   end
 
   def merchants_ranked_by_revenue
-    sorted = sum_invoice_totals.sort_by {|merchant_id, sum| sum }
+    sorted = sum_invoice_totals.sort_by { |_merchant_id, sum| sum }
     reversed = sorted.reverse.to_h
-    reversed.map do |merchant_id, invoice_total|
+    reversed.map do |merchant_id, _invoice_total|
       @sales_engine.merchants.find_by_id(merchant_id)
     end
   end
@@ -80,11 +79,11 @@ module MerchantAnalytics
     group_items_by_merchant.each do |merchant_id, items|
       items_per_merchant[merchant_id] = items.count
     end
-    items_per_merchant.keep_if {|id, items| items == 1}
+    items_per_merchant.keep_if { |_id, items| items == 1 }
   end
 
   def merchants_with_only_one_item
-    get_merchant_ids_with_one_item.map do |merchant_id, items|
+    get_merchant_ids_with_one_item.map do |merchant_id, _items|
       @sales_engine.merchants.find_by_id(merchant_id)
     end
   end
@@ -118,8 +117,8 @@ module MerchantAnalytics
     end.flatten
   end
 
-
-  def sold_invoice_item_quantities(paid_invoice_items) #merchants sold item quantities
+  def sold_invoice_item_quantities(paid_invoice_items)
+    # merchants sold item quantities
     sold_quantities = {}
     paid_invoice_items.map do |item|
       sold_quantities[item.item_id] = item.quantity
@@ -129,7 +128,7 @@ module MerchantAnalytics
 
   def top_selling_item_by_quantity(sold_quantities)
     max_item_quantity = sold_quantities.values.max
-    sold_quantities.keep_if do |item_id, quantity|
+    sold_quantities.keep_if do |_item_id, quantity|
       quantity == max_item_quantity
     end
     sold_quantities.keys.map do |item_id|
@@ -139,7 +138,7 @@ module MerchantAnalytics
 
   def top_selling_item_by_revenue(sold_revenues)
     max_item_revenue = sold_revenues.values.max
-    sold_revenues.keep_if do |item_id, revenue|
+    sold_revenues.keep_if do |_item_id, revenue|
       revenue == max_item_revenue
     end
     sold_revenues.keys.map do |item_id|
@@ -154,7 +153,8 @@ module MerchantAnalytics
     top_selling_item_by_revenue(sold_revenues)
   end
 
-  def sold_invoice_item_revenues(paid_invoice_items) #merchants sold item quantities
+  def sold_invoice_item_revenues(paid_invoice_items)
+    # merchants sold item quantities
     sold_revenues = {}
     paid_invoice_items.map do |item|
       sold_revenues[item.item_id] = item.quantity * item.unit_price
