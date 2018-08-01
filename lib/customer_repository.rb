@@ -5,7 +5,7 @@ class CustomerRepository
   include RepoMethods
   def initialize(customer_data)
     @customer_rows ||= build_customer(customer_data)
-    @repo = @customer_rows #shops = an array of customers, might change this name
+    @repo = @customer_rows
   end
 
   def build_customer(customer_data)
@@ -33,8 +33,8 @@ class CustomerRepository
       first_name: attributes[:first_name],
       last_name: attributes[:last_name],
       created_at: Time.now,
-      updated_at: Time.now,
-      )
+      updated_at: Time.now
+    )
     @repo << customer
     customer
   end
