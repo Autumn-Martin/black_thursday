@@ -6,14 +6,14 @@ class SalesAnalyst
   def initialize(sales_engine)
     @sales_engine = sales_engine
     @days = {
-            0 => "Sunday",
-            1 => "Monday",
-            2 => "Tuesday",
-            3 => "Wednesday",
-            4 => "Thursday",
-            5 => "Friday",
-            6 => "Saturday"
-            }
+      0 => 'Sunday',
+      1 => 'Monday',
+      2 => 'Tuesday',
+      3 => 'Wednesday',
+      4 => 'Thursday',
+      5 => 'Friday',
+      6 => 'Saturday'
+    }
   end
 
   def average_items_per_merchant
@@ -34,35 +34,35 @@ class SalesAnalyst
   end
 
   def find_number_of_merchants_for_items
-    group_items_by_merchant.inject(0) do |count, (id, items)|
+    group_items_by_merchant.inject(0) do |count, (_id, _items)|
       count + 1
     end
   end
 
   def find_total_number_of_items
-    group_items_by_merchant.inject(0) do |count, (id, items)|
+    group_items_by_merchant.inject(0) do |count, (_id, items)|
       count + items.count
     end
   end
 
   def items_per_merchant
-    group_items_by_merchant.map do |id, items|
+    group_items_by_merchant.map do |_id, items|
       items.count
     end
   end
 
   def variance(average, array)
-    variance = array.inject(0) do |count, items|
-      count += (items.to_f - average) ** 2
+    array.inject(0) do |count, items|
+      count + (items.to_f - average)**2
     end
   end
 
   def square_root_of_variance(variance, array)
-    (Math.sqrt(variance/(array.size-1))).round(2)
+    Math.sqrt(variance / (array.size - 1)).round(2)
   end
 
   def items_one_standard_deviation_above
-    #item quantity
+    # item quantity
     average_items_per_merchant + average_items_per_merchant_standard_deviation
   end
 
@@ -133,15 +133,12 @@ class SalesAnalyst
     end
   end
 
-
-#---------------ITERATION-2-STUFF------------------------#
-# sales_analyst.average_invoices_per_merchant # => 10.49
   def average_invoices_per_merchant
     merchants_total = find_number_of_merchants_for_invoices
     invoices_total = find_total_number_of_invoices
     (invoices_total.to_f / merchants_total).round(2)
   end
-# sales_analyst.average_invoices_per_merchant_standard_deviation # => 3.29
+
   def average_invoices_per_merchant_standard_deviation
     average = average_invoices_per_merchant
     ipm = invoices_per_merchant
