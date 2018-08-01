@@ -151,7 +151,7 @@ module MerchantAnalytics
     paid_invoices = pull_paid_invoices_per_merchant(merchant_id)
     paid_invoice_items = find_all_paid_invoice_items_by_id(paid_invoices)
     sold_revenues = sold_invoice_item_revenues(paid_invoice_items)
-    top_selling_item_by_revenue(sold_revenues)
+    top_selling_item_by_revenue(sold_revenues)[0]
   end
 
   def sold_invoice_item_revenues(paid_invoice_items) #merchants sold item quantities
