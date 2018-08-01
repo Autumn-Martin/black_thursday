@@ -36,7 +36,7 @@ class InvoiceRepository
       status: attributes[:status],
       created_at: Time.now,
       updated_at: Time.now
-      )
+    )
     @repo << invoice
     invoice
   end
