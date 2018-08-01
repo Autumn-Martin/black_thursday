@@ -1,2 +1,12 @@
 rubocop:
   config_file: .rubocop.yml
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+  # gets rid of frozen string literal comment error
+
+Style/Documentation:
+  Enabled: false
+  # gets rid of missing top-level module documentation
+  # comment error

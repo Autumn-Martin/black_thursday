@@ -60,7 +60,7 @@ module MerchantAnalytics
 
   def merchant_id_for_pending_invoices
     @sales_engine.invoices.all.map do |invoice|
-      if !invoice_paid_in_full?(invoice.id)
+      unless invoice_paid_in_full?(invoice.id)
         invoice.merchant_id
       end
     end.uniq.compact
