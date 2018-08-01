@@ -277,8 +277,8 @@ class SalesAnalyst
   def invoice_paid_in_full?(invoice_id)
     return false if @sales_engine.transactions.find_all_by_invoice_id(invoice_id) == []
     invoice = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
-    invoice.any? do |invoice|
-      invoice.result == :success
+    invoice.any? do |inv|
+      inv.result == :success
     end
   end
 
