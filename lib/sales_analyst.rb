@@ -217,7 +217,7 @@ class SalesAnalyst
 
   def average_invoices_per_day
     days_total = find_number_of_days_for_invoices
-    invoices_total = find_total_number_of_invoices
+    invoices_total = find_total_number_of_invoices_by_day_created
     (invoices_total.to_f / days_total).round(2)
   end
 
@@ -234,7 +234,7 @@ class SalesAnalyst
     end
   end
 
-  def find_total_number_of_invoices
+  def find_total_number_of_invoices_by_day_created
     group_invoices_by_day_created.inject(0) do |count, (_day, invoices)|
       count + invoices.count
     end
