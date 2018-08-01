@@ -74,7 +74,7 @@ module MerchantAnalytics
     end
   end
 
-  def get_merchant_ids_with_one_item
+  def merchant_ids_with_one_item
     items_per_merchant = {}
     group_items_by_merchant.each do |merchant_id, items|
       items_per_merchant[merchant_id] = items.count
@@ -83,7 +83,7 @@ module MerchantAnalytics
   end
 
   def merchants_with_only_one_item
-    get_merchant_ids_with_one_item.map do |merchant_id, _items|
+    merchant_ids_with_one_item.map do |merchant_id, _items|
       @sales_engine.merchants.find_by_id(merchant_id)
     end
   end
