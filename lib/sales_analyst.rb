@@ -152,27 +152,26 @@ class SalesAnalyst
   end
 
   def find_number_of_merchants_for_invoices
-    group_invoices_by_merchant.inject(0) do |count, (id, invoices)|
+    group_invoices_by_merchant.inject(0) do |count, (_id, _invoices)|
       count + 1
     end
   end
 
   def find_total_number_of_invoices
-    group_invoices_by_merchant.inject(0) do |count, (id, invoices)|
+    group_invoices_by_merchant.inject(0) do |count, (_id, invoices)|
       count + invoices.count
     end
   end
 
   def invoices_per_merchant
-    group_invoices_by_merchant.map do |id, invoices|
+    group_invoices_by_merchant.map do |_id, invoices|
       invoices.count
     end
   end
 
-# Which merchants are more than two standard deviations above the mean?
-# sales_analyst.top_merchants_by_invoice_count # => [merchant, merchant, merchant]
   def invoices_one_standard_deviation_above
-    sum = average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation
+    average_invoices = average_invoices_per_merchant_standard_deviation
+    sum = average_invoices_per_merchant + averge_invoices
     sum.round(2)
   end
 
