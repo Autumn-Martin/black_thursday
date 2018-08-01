@@ -123,7 +123,7 @@ module MerchantAnalytics
     paid_invoice_items.map do |item|
       sold_quantities[item.item_id] = item.quantity
     end
-    return sold_quantities
+    sold_quantities
   end
 
   def top_selling_item_by_quantity(sold_quantities)
@@ -159,6 +159,6 @@ module MerchantAnalytics
     paid_invoice_items.map do |item|
       sold_revenues[item.item_id] = item.quantity * item.unit_price
     end
-    return sold_revenues
+    sold_revenues
   end
 end
