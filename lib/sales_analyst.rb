@@ -67,8 +67,9 @@ class SalesAnalyst
   end
 
   def merchants_with_high_item_count
+    one_std_dev = items_one_standard_deviation_above
     item_amount_per_merchant.map do |id, quantity|
-      @sales_engine.merchants.find_by_id(id) if quantity >= items_one_standard_deviation_above
+      @sales_engine.merchants.find_by_id(id) if quantity >= one_std_dev
     end.compact
   end
 
@@ -170,13 +171,12 @@ class SalesAnalyst
   end
 
   def invoices_one_standard_deviation_above
-    average_invoices = average_invoices_per_merchant_standard_deviation
-    sum = average_invoices_per_merchant + averge_invoices
+    sum = average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation
     sum.round(2)
   end
 
   def invoices_two_standard_deviations_above
-    sum = average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation*2
+    sum = average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation * 2
     sum.round(2)
   end
 
@@ -189,9 +189,9 @@ class SalesAnalyst
     end
     merchants
   end
-# sales_analyst.bottom_merchants_by_invoice_count # => [merchant, merchant, merchant]
+
   def invoices_two_standard_deviations_below
-    diff = average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation*2
+    diff = average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation * 2
     diff.round(2)
   end
 
@@ -229,19 +229,19 @@ class SalesAnalyst
   end
 
   def find_number_of_days_for_invoices
-    group_invoices_by_day_created.inject(0) do |count, (day, invoices)|
+    group_invoices_by_day_created.inject(0) do |count, (_day, _invoices)|
       count + 1
     end
   end
 
   def find_total_number_of_invoices
-    group_invoices_by_day_created.inject(0) do |count, (day, invoices)|
+    group_invoices_by_day_created.inject(0) do |count, (_day, invoices)|
       count + invoices.count
     end
   end
 
   def invoices_per_day
-    group_invoices_by_day_created.map do |day, invoices|
+    group_invoices_by_day_created.map do |_day, invoices|
       invoices.count
     end
   end
