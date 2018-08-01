@@ -127,8 +127,9 @@ class SalesAnalyst
   end
 
   def golden_items
+    two_std_devs = item_two_standard_deviations_above
     @sales_engine.items.all.each_with_object([]) do |item, collection|
-      collection << item if item.unit_price >= item_two_standard_deviations_above
+      collection << item if item.unit_price >= two_std_devs
       collection
     end
   end
