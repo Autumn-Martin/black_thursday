@@ -247,7 +247,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_get_merchant_id_for_pending_invoices
-    assert_equal [4, 5], @sa.get_merchant_id_for_pending_invoices
+    assert_equal [4, 5], @sa.merchant_id_for_pending_invoices
   end
 
   def test_it_can_group_merchants_with_pending_invoices

@@ -31,7 +31,7 @@ class InvoiceItemRepository
       unit_price: attributes[:unit_price],
       created_at: Time.now,
       updated_at: Time.now
-      )
+    )
     @repo << invoice_item
     invoice_item
   end

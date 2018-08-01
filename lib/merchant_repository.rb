@@ -5,7 +5,7 @@ class MerchantRepository
   include RepoMethods
   def initialize(merchant_data)
     @merchant_rows ||= build_merchant(merchant_data)
-    @repo = @merchant_rows #shops = an array of merchants, might change this name
+    @repo = @merchant_rows
   end
 
   def build_merchant(merchant_data)
@@ -26,8 +26,8 @@ class MerchantRepository
       id: id,
       name: attributes[:name],
       created_at: Time.now,
-      updated_at: Time.now,
-      )
+      updated_at: Time.now
+    )
     @repo << merchant
     merchant
   end
@@ -39,5 +39,4 @@ class MerchantRepository
     merchant.updated_at = Time.now
     merchant
   end
-
 end

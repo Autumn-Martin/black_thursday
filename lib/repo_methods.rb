@@ -1,5 +1,4 @@
 module RepoMethods
-
   def all
     @repo
   end
@@ -12,7 +11,8 @@ module RepoMethods
 
   def find_by_name(name)
     @repo.find do |object|
-      object.name.casecmp(name).zero? # if case-insensitive returns 0, = the same name
+      object.name.casecmp(name).zero?
+      # if case-insensitive returns 0, = the same name
     end
   end
 
@@ -27,14 +27,12 @@ module RepoMethods
   end
 
   def find_highest_id
-    @repo.max_by do |object|
-      object.id
-    end
+    @repo.max_by(&:id)
   end
 
   def delete(id)
-    object = @repo.find_index do |object|
-      object.id == id
+    object = @repo.find_index do |obj|
+      obj.id == id
     end
     return if object.nil?
     @repo.delete_at(object)

@@ -1,5 +1,4 @@
 class Customer
-
   attr_reader :id,
               :created_at
 

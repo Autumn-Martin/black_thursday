@@ -37,7 +37,7 @@ class TransactionRepository
       result: attributes[:result],
       created_at: Time.now,
       updated_at: Time.now
-      )
+    )
     @repo << transaction
     transaction
   end

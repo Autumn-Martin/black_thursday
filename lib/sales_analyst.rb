@@ -6,14 +6,14 @@ class SalesAnalyst
   def initialize(sales_engine)
     @sales_engine = sales_engine
     @days = {
-            0 => "Sunday",
-            1 => "Monday",
-            2 => "Tuesday",
-            3 => "Wednesday",
-            4 => "Thursday",
-            5 => "Friday",
-            6 => "Saturday"
-            }
+      0 => 'Sunday',
+      1 => 'Monday',
+      2 => 'Tuesday',
+      3 => 'Wednesday',
+      4 => 'Thursday',
+      5 => 'Friday',
+      6 => 'Saturday'
+    }
   end
 
   def average_items_per_merchant
@@ -34,41 +34,42 @@ class SalesAnalyst
   end
 
   def find_number_of_merchants_for_items
-    group_items_by_merchant.inject(0) do |count, (id, items)|
+    group_items_by_merchant.inject(0) do |count, (_id, _items)|
       count + 1
     end
   end
 
   def find_total_number_of_items
-    group_items_by_merchant.inject(0) do |count, (id, items)|
+    group_items_by_merchant.inject(0) do |count, (_id, items)|
       count + items.count
     end
   end
 
   def items_per_merchant
-    group_items_by_merchant.map do |id, items|
+    group_items_by_merchant.map do |_id, items|
       items.count
     end
   end
 
   def variance(average, array)
-    variance = array.inject(0) do |count, items|
-      count += (items.to_f - average) ** 2
+    array.inject(0) do |count, items|
+      count + (items.to_f - average)**2
     end
   end
 
   def square_root_of_variance(variance, array)
-    (Math.sqrt(variance/(array.size-1))).round(2)
+    Math.sqrt(variance / (array.size - 1)).round(2)
   end
 
   def items_one_standard_deviation_above
-    #item quantity
+    # item quantity
     average_items_per_merchant + average_items_per_merchant_standard_deviation
   end
 
   def merchants_with_high_item_count
+    one_std_dev = items_one_standard_deviation_above
     item_amount_per_merchant.map do |id, quantity|
-      @sales_engine.merchants.find_by_id(id) if quantity >= items_one_standard_deviation_above
+      @sales_engine.merchants.find_by_id(id) if quantity >= one_std_dev
     end.compact
   end
 
@@ -127,21 +128,19 @@ class SalesAnalyst
   end
 
   def golden_items
+    two_std_devs = item_two_standard_deviations_above
     @sales_engine.items.all.each_with_object([]) do |item, collection|
-      collection << item if item.unit_price >= item_two_standard_deviations_above
+      collection << item if item.unit_price >= two_std_devs
       collection
     end
   end
 
-
-#---------------ITERATION-2-STUFF------------------------#
-# sales_analyst.average_invoices_per_merchant # => 10.49
   def average_invoices_per_merchant
     merchants_total = find_number_of_merchants_for_invoices
     invoices_total = find_total_number_of_invoices
     (invoices_total.to_f / merchants_total).round(2)
   end
-# sales_analyst.average_invoices_per_merchant_standard_deviation # => 3.29
+
   def average_invoices_per_merchant_standard_deviation
     average = average_invoices_per_merchant
     ipm = invoices_per_merchant
@@ -154,32 +153,30 @@ class SalesAnalyst
   end
 
   def find_number_of_merchants_for_invoices
-    group_invoices_by_merchant.inject(0) do |count, (id, invoices)|
+    group_invoices_by_merchant.inject(0) do |count, (_id, _invoices)|
       count + 1
     end
   end
 
   def find_total_number_of_invoices
-    group_invoices_by_merchant.inject(0) do |count, (id, invoices)|
+    group_invoices_by_merchant.inject(0) do |count, (_id, invoices)|
       count + invoices.count
     end
   end
 
   def invoices_per_merchant
-    group_invoices_by_merchant.map do |id, invoices|
+    group_invoices_by_merchant.map do |_id, invoices|
       invoices.count
     end
   end
 
-# Which merchants are more than two standard deviations above the mean?
-# sales_analyst.top_merchants_by_invoice_count # => [merchant, merchant, merchant]
   def invoices_one_standard_deviation_above
     sum = average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation
     sum.round(2)
   end
 
   def invoices_two_standard_deviations_above
-    sum = average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation*2
+    sum = average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation * 2
     sum.round(2)
   end
 
@@ -192,9 +189,9 @@ class SalesAnalyst
     end
     merchants
   end
-# sales_analyst.bottom_merchants_by_invoice_count # => [merchant, merchant, merchant]
+
   def invoices_two_standard_deviations_below
-    diff = average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation*2
+    diff = average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation * 2
     diff.round(2)
   end
 
@@ -220,7 +217,7 @@ class SalesAnalyst
 
   def average_invoices_per_day
     days_total = find_number_of_days_for_invoices
-    invoices_total = find_total_number_of_invoices
+    invoices_total = find_total_number_of_invoices_by_day_created
     (invoices_total.to_f / days_total).round(2)
   end
 
@@ -232,19 +229,19 @@ class SalesAnalyst
   end
 
   def find_number_of_days_for_invoices
-    group_invoices_by_day_created.inject(0) do |count, (day, invoices)|
+    group_invoices_by_day_created.inject(0) do |count, (_day, _invoices)|
       count + 1
     end
   end
 
-  def find_total_number_of_invoices
-    group_invoices_by_day_created.inject(0) do |count, (day, invoices)|
+  def find_total_number_of_invoices_by_day_created
+    group_invoices_by_day_created.inject(0) do |count, (_day, invoices)|
       count + invoices.count
     end
   end
 
   def invoices_per_day
-    group_invoices_by_day_created.map do |day, invoices|
+    group_invoices_by_day_created.map do |_day, invoices|
       invoices.count
     end
   end
@@ -280,8 +277,8 @@ class SalesAnalyst
   def invoice_paid_in_full?(invoice_id)
     return false if @sales_engine.transactions.find_all_by_invoice_id(invoice_id) == []
     invoice = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
-    invoice.any? do |invoice|
-      invoice.result == :success
+    invoice.any? do |inv|
+      inv.result == :success
     end
   end
 
